@@ -335,6 +335,7 @@ export default {
   bottom: 0
   left: 50%
   transform: translateX(-50%)
+  max-width: 85%
 
 button
     background: green
