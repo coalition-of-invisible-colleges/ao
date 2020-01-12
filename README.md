@@ -1,55 +1,16 @@
 
-#### Autonomous Organization
-Feature list:
-    * Connect physical resources (door, vending) with readers and pin activated hardware.
-    * Maintain list of accounts associated with rfid tags.
-    * Accounts can create cards, send them between accounts, create lists of priorities, plunge cards into cards inception.
-    
-To fully function, ao requires sqlite3, bitcoind, and clightning. When you have them installed you must create a configuration.js file in the ao folder. configuration.js example...
+#### Install
 
-    module.exports = {
-    bitcoind:{
-        network: 'regtest'
-    },
-    clightning: {
-        dir:'/home/trhode/.lightning'
-    },
-    sqlite3: {
-        file: '/home/trhode/.ao/database.sqlite3'
-    },
-    bitcoinAverage: {
-        pub: '',
-        secret: ''
-    }}
+On Raspbian or Ubunutu 18 run the `install.sh` script file. From the ao directory, add the permission and run script:
+```
+chmod u+x install.sh
+./install.sh
+```
+Try running the script 2-3 times. Process should be running on localhost:8003 after setup. **The username and password of the first user is dctrl**. Script creates lightning wallet [clightning](https://github.com/ElementsProject/lightning) and requires a full node. Addresses and invoices are controlled on your device. Backup the ~/.lightning/bitcoin/hsm_secret file. Use at your own risk!
 
+### Autonomous Organization
 
-
-
-AO is locally run infrastructure to help create successful commons hackerspaces.
-
-`git clone ...`
-`cd ao`
-
-`yarn install`
-`yarn compile`
-`yarn start`
-
-````
-module.exports = {
-    bitcoind:{
-        network: 'regtest'
-    },
-    clightning: {
-        dir:'/home/trhode/.lightning'
-    },
-    sqlite3: {
-        file: '/home/trhode/.ao/database.sqlite3'
-    },
-    bitcoinAverage: {
-        pub: '',
-        secret: ''
-    },
-}
-````
-
-The addresses created by ao are on this device - backup the ~/.lightning/hsm_secret file - this is very experimental; use at your own risk.
+1. Add ideas, missions, goals, text on cards.
+2. Create accounts that can log in and register rfid tags.
+3. Manage smart vending machine and maglock door using [pi](https://github.com/autonomousorganization/pi).
+4. Use tor to access remotely and relay cards to another ao.
