@@ -1,45 +1,76 @@
 <template lang='pug'>
 
 #frontrecent
-  .container(v-if='recentMembers.length > 0')
-    h1.up Much Recent
-    row(v-for="(m, i) in recentMembers", :m="m"  v-if="showTotal > i")
-    img.andThen(@click='andThen'  src='../../assets/images/kisspng-dolphin-porpoise-sticker-adhesive-5aef7f9d672f78.5792508915256452134227.png')
-    img.fw(src='../../assets/images/pixeldesert.png')
+    .container(v-if='recentMembers.length > 0 && !showAviary')
+        h1.up(@click='toggleAviary()') Much Recent
+        row(v-for="(m, i) in recentMembers"  :m="m"  v-if="showTotal > i")
+        img.andThen(@click='andThen'  src='../../assets/images/kisspng-dolphin-porpoise-sticker-adhesive-5aef7f9d672f78.5792508915256452134227.png')
+        img.fw(src='../../assets/images/pixeldesert.png')
+    .container(v-else)
+        h1.up.bluetx(@click='toggleAviary()') Very Bird
+        div(v-for='(tasks, key) in passesByMember')
+            current.big(:memberId='key')
+            .indent(v-for='t in tasks')
+                simple-hyperpriority(:taskId='t.taskId'  :c='t')
 </template>
 
 <script>
 
 import Row from '../Members/Row'
+import Current from '../Resources/Current'
+import SimpleHyperpriority from '../Deck/SimplePriority'
+
 export default {
-  components:{
-      Row,
-  },
-  data(){
-      return {showTotal: 11}
-  },
-  mounted(){
+    components: {
+      Row, Current, SimpleHyperpriority,
+    },
+    data() {
+      return {
+          showTotal: 11,
+          showAviary: false,
+      }
+    },
+    mounted() {
       this.$store.commit('stopLoading')
-  },
-  methods: {
-      andThen(){
-          this.showTotal ++
+    },
+    methods: {
+      andThen() {
+        this.showTotal ++
+      },
+      toggleAviary() {
+        this.showAviary = !this.showAviary
       }
-  },
-  computed: {
-      recentMembers(){
-          let recentMembers = []
-          try {
-            recentMembers = this.$store.state.members.slice()
-            recentMembers.sort((a, b) => {
-                return b.lastUsed - a.lastUsed
+    },
+    computed: {
+      recentMembers() {
+        let recentMembers = []
+        try {
+        recentMembers = this.$store.state.members.slice()
+        recentMembers.sort((a, b) => {
+            return b.lastUsed - a.lastUsed
+        })
+        } catch (err){
+          console.log("ddnn wrrk: ", err)
+        }
+        return recentMembers
+      },
+      passesByMember() {
+        let members = {}
+        this.$store.state.tasks.forEach(t => {
+            return t.passed.forEach(p => {
+                if( p[0] === this.$store.getters.member.memberId) {
+                    if(!members.hasOwnProperty(p[1])) {
+                        members[p[1]] = []
+                    }
+                    members[p[1]].push(t)
+                }
             })
-          } catch (err){
-              console.log("ddnn wrrk: ", err)
-          }
-          return recentMembers
-      }
-  }
+        })
+        console.log("members is ", members)
+        return members
+      },
+
+    }
 }
 
 </script>
@@ -217,7 +248,8 @@ h2
     margin: -1.25em auto 0.25em auto
     padding: 0.25em
     z-index: 80
-
+    cursor: pointer
+    
 .carousel-cell
     padding: 0.6em 0.5em 0.75em 0.5em
     font-size: 1.3em
@@ -294,4 +326,10 @@ h2
     font-weight: bold
     font-size: 1.25em
     margin-top: -0.13em
+
+.big
+    font-size: 1.5em
+
+.indent
+    margin-left: 4.4em
 </style>

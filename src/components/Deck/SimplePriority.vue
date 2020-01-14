@@ -9,8 +9,8 @@
       img.front.nopad(v-if='card.guild'  src="../../assets/images/badge.svg")
       span.front.nudge(v-if='card.guild')  {{ card.guild }}
       img.left.front(v-if='isMember' src="../../assets/images/loggedIn.svg")
-      span.checkmark.right.front(v-if='isCompleted'  ref='checkbox') ☑
-      span.checkmark.right.front(v-else-if='!isCompleted'  ref='checkbox') ☐
+      span.checkmark.right.front(v-if='inId && isCompleted'  ref='checkbox') ☑
+      span.checkmark.right.front(v-else-if='inId && !isCompleted'  ref='checkbox') ☐
       tally.right.front.lesspadding(:b='card')
       span.right.front(v-if='card.book.startTs') {{ cardStart.days.toFixed(1) }} days
       img.right.front(v-if='card.book.startTs' src="../../assets/images/timecube.svg")
