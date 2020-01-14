@@ -3,6 +3,7 @@ import dctrlDb from './dctrlDb'
 import M from '../mutations'
 import modules from '../modules'
 import config from '../../configuration'
+import filesharing from '../utils/filesharing'
 
 const serverState = {
   ao: [],
@@ -127,6 +128,8 @@ function initialize(callback) {
 
               callback(null)
           })
+          filesharing.initialize()
+          filesharing.scanMemes()
     })
 }
 

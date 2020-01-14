@@ -22,8 +22,9 @@
           .cardhud(v-if='cardStart')
               img.smallguild(src='../../assets/images/timecubewithwhite.png')
               span {{ cardStart.days.toFixed(1) }} days
-          linky.cardhud(:x='b.name' v-if='!dogeCard')
+          linky.cardhud(:x='b.name' v-if='!dogeCard && !ipfsCard')
           .cardhud(v-if='dogeCard') {{ dogeCard.name }}
+          div(v-if='ipfsCard') IPFS card detected
     simple-priorities(v-if='b.guild', :taskId="b.taskId", :inId='b.taskId')
     passed(:b='b')
     shipped(:b='b', :inId='inId')
@@ -53,6 +54,7 @@ import Current from '../Resources/Current'
 import Hammer from 'hammerjs'
 import Propagating from 'propagating-hammerjs'
 import SoundFX from '../../utils/sounds'
+import filesharing from '../../utils/filesharing'
 
 export default {
     props: ['b', 'inId', 'c'],
@@ -207,6 +209,13 @@ export default {
               }
           })
           return mc
+        },
+        ipfsCard() {
+          return this.b.name.slice(0, 6) === '/ipfs/'
+        },
+        attachmentURL() {
+            // this makes no sense because the file should be got server-side, right?
+            return filesharing.getFile(this.b.name)
         },
         fractionalReserveDoge() {
             return Math.max(Math.floor((this.b.weight % 1) * 16), 1)
