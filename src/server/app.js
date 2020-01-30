@@ -16,6 +16,7 @@ import cronStarter from './crons'
 import lightning from './lightning'
 import connector from   './connector'
 import { watchAos } from   './peerState'
+import filesharing from '../utils/filesharing'
 
 const app = express()
 applyRouter(app)
@@ -44,6 +45,9 @@ function startDctrlAo(){
           state.applyEvent(state.serverState, ev)
       })
       .onValue(reactions)
+
+      filesharing.initialize()
+      filesharing.scanMemes()
 
       const server = app.listen(PORT, err => {
         console.log("Listening on port", PORT)
