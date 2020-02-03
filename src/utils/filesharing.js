@@ -36,7 +36,7 @@ function getFile(ipfsPath) {
 	// let stream = ipfs.catReadableStream(ipfsPath).then(response => response.blob())
 }
 
-export default {
+module.exports = {
 	initialize,
 	scanMemes,
 	getFile
