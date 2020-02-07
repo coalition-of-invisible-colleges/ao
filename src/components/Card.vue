@@ -25,7 +25,7 @@
           linky.cardhud(:x='b.name' v-if='!dogeCard && !ipfsCard')
           .cardhud(v-if='dogeCard') {{ dogeCard.name }}
           div(v-if='ipfsCard') IPFS card detected
-    simple-priorities(v-if='b.guild', :taskId="b.taskId", :inId='b.taskId')
+    simple-priorities(:taskId="b.taskId", :inId='b.taskId')
     passed(:b='b')
     shipped(:b='b', :inId='inId')
     .spacer
