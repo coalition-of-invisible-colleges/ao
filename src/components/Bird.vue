@@ -15,7 +15,7 @@
             select.shorten(v-model='toGuildWarp')
                 option(disabled, value='') to mission
                 option(v-for='n in $store.getters.warpDrive.state.members', :value="n.memberId") {{ n.name }}
-            form-box.small(v-if='toGuildWarp' btntxt="give"  event='task-passed' v-bind:data='relayInfoM'  @click='makeSound')
+            form-box.small(v-if='toGuildWarp' btntxt="give"  event='task-passed' v-bind:data='relayInfoM')
             span.sierpinskiwrapper
                 sierpinski(:b='b')
             .serverLabel on {{ $store.getters.warpDrive.address }}
@@ -28,7 +28,7 @@
                     option(:value="p.taskId") &nbsp;&nbsp;&nbsp;&nbsp;{{ p.guild }}
                     template(v-for='sp in p.guilds')
                         option(:value="sp.taskId") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ sp.guild }}
-        form-box.small(btntxt="give"  event='task-passed' v-bind:data='playInfo'  @click='makeSound')
+        form-box.small(btntxt="give"  event='task-passed' v-bind:data='playInfo')
     .give(v-if='showGive')
         div(v-if='$store.state.upgrades.warp > -1')
             select.shorten(v-model='toMemberWarp'  :key='$store.getters.warpDrive.address')
@@ -43,7 +43,7 @@
             select(v-model='toMember')
                 option(disabled, value='') to people
                 option(v-for='n in $store.state.members', :value="n.memberId") {{ n.name }}
-            form-box.small(btntxt="give"  event='task-passed' v-bind:data='passInfo'  @click='makeSound')
+            form-box.small(btntxt="give"  event='task-passed' v-bind:data='passInfo')
     .warp(v-if='showWarp')
         select(v-model='toAo')
             option(disabled  value='') to AO
@@ -57,11 +57,9 @@
 <script>
 import Hammer from 'hammerjs'
 import Propagating from 'propagating-hammerjs'
-
 import FormBox from './FormBox'
 import GuildCreate from './GuildCreate'
-
-import Cards from '../utils/cards'
+import calculations from '../calculations'
 import Sierpinski from './Sierpinski'
 
 export default {
@@ -100,7 +98,6 @@ export default {
         doubleTap.requireFailure(tripleTap)
 
         mc.on('singletap', (e) => {
-
             this.toggleGive()
             e.stopPropagation()
         })
@@ -197,9 +194,6 @@ export default {
             this.$store.commit('setWarp', this.toAo)
             this.toggleWarp()
         },
-        makeSound() {
-
-        },
         sendAllHodls() {
             let all = this.$store.tasks.filter(t => t.deck.indexOf(this.$store.member.memberId) > -1)
             all.forEach(t => {
@@ -211,13 +205,11 @@ export default {
             let tasks = [Object.assign({}, this.b)]
             tasks[0].passed = [[this.$store.state.cash.address, this.toMemberWarp, this.$store.getters.member.memberId]]
             tasks[0].deck = []
-            console.log("trying to send tasks: " , tasks)
             this.$store.dispatch('makeEvent', { type: 'ao-relay', address: this.$store.getters.warpDrive.address, ev: {
                 type: 'tasks-received', tasks }
             })
         },
         migrate() {
-            this.makeSound()
             let found = []
             this.$store.dispatch('makeEvent', {
                 type: 'doge-migrated',
@@ -243,7 +235,7 @@ export default {
                         let task = this.$store.getters.hashMap[t]
                         if(task === undefined || task.subTasks === undefined || task.priorities === undefined || task.completed === undefined) return false
 
-                        found.push(Cards.safeClone(task))
+                        found.push(calculations.safeClone(task))
                         newCards = newCards.concat(task.subTasks, task.priorities, task.completed)
                         return true
                     })
@@ -252,7 +244,6 @@ export default {
             } else {
                 found = [ this.b ]
             }
-            console.log('there are this many tasks: ', found.length)
             found[0].passed = [[this.$store.state.cash.address, this.toMemberWarp, this.$store.getters.member.memberId]]
             let next100 = found.splice(0, 20)
             while(next100.length > 0 || found.length > 0) {
@@ -321,7 +312,6 @@ export default {
                     others.push(t)
                 }
             })
-            console.log("others is ", others)
             others = others.slice(index).concat(others.slice(0, index))
             return others
         },

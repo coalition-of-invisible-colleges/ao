@@ -6,24 +6,19 @@
         img.logindicator(v-if='isLoggedIn', src='../assets/images/loggedIn.svg')
         img.logindicator(v-else, src='../assets/images/loggedOut.svg')
         label.hackername(:class='{ spacer: $store.state.upgrades.mode !== "doge" || $store.getters.contextCard.priorities.length < 1 }') {{ m.name }}
-    .bottomleft(v-if='card.boost')
+    not-zen(v-if='$store.state.upgrades.mode !== "boat" && dukkha >= 1')
+    .bottomleft
+      div(@click='goChest')
         img.smallguild(src='../assets/images/chest.svg')
         label.stash(v-if='card.boost') {{ card.boost.toFixed(2) }}
         label.stash(v-else) 0
-    not-zen(v-if='$store.state.upgrades.mode !== "boat" && dukkha >= 1')
+        div(v-if='m.active > 0') active
+        div(v-else) inactive
     .bottomright
-      .tooltip
-        img.dogecoin.adjtooltip(src='../assets/images/doge_in_circle.png'  :class='{ faded : m.active <= 0 }'  @click='toggleActivated')
-        .tooltiptext.membertooltip
-            p.suggest(v-if='m.active > 0 && m.memberId === $store.getters.member.memberId') click to deactivate
-            p.suggest(v-if='m.active <= 0 && m.memberId === $store.getters.member.memberId') click to activate
-            .gui.title(v-if='nameList.length > 0') vouches
-            ul.left(v-if='nameList.length > 0')
-                li(v-for='n in nameList')
-                    vouch.gui(:memberId='n'  :b='b'  :inId='ugly')
-            h2 {{ deckSize }} cards
-            .gui(v-if='m.active > 0') account is active
-            .gui(v-else) account is inactive cannot use resources, will not be included in rent.
+        div(@click='goBadge')
+            img.smallguild(src='../assets/images/badge.svg')
+            div.stash {{nameList.length}}
+        div(@click='goArchive') {{ deckSize }} cards
     .clearboth
 </template>
 
@@ -66,6 +61,15 @@ export default {
         },
     },
     methods: {
+        goArchive(){
+            this.$router.push('/archive')
+        },
+        goBadge(){
+            this.$router.push('/badge')
+        },
+        goChest(){
+            this.$router.push('/chest')
+        },
         getName(taskId){
             let name
             this.$store.state.tasks.some(t => {
@@ -131,51 +135,6 @@ label
     text-align: center
     position: relative
 
-.agedwrapper
-    position: relative
-
-.agedbackground
-    background-image: url('../assets/images/paper.jpg')
-    background-repeat: no-repeat
-    background-position: center center
-    background-size: cover
-    top: 0
-    left: 0
-    bottom: 0
-    right: 0
-    position: absolute
-    width: 100%
-    height: 100%
-    pointer-events: none
-    //border-radius: 12px
-    z-index: -1
-
-.freshpaper
-    background-image: url('../assets/images/paper.jpg')
-    opacity: 0.3
-
-.weekoldpaper
-    background-image: url('../assets/images/paper_aged_1.png')
-    opacity: 0.3
-
-.montholdpaper
-    background-image: url('../assets/images/paper_aged_2.png')
-    opacity: 0.3
-
-.threemontholdpaper
-    background-image: url('../assets/images/paper_aged_3.png')
-    opacity: 0.3
-
-.smallcaps
-    color: #fff
-    width: 100%
-    border-radius: 50%
-    opacity: 0.75
-    padding: 0.5em
-    border-style: solid
-    border-color: white
-    border-width: 2px
-
 .smallguild
     height: 2em
 
@@ -185,13 +144,14 @@ label
     position: relative
     bottom: 0
     left: 0
+    cursor: pointer
 
 .bottomright
     width: fit-content
     right: 1em
     bottom: 0.65em
     float: right
-    margin-top: -3em
+    cursor: pointer
 
 .stash
     display: inline
@@ -202,11 +162,8 @@ label
 .clearboth
     clear: both
 
-.gui
-    font-size: 1.7em
-    cursor: pointer
-
 .title
+    cursor: pointer
     text-align: center
     font-size: 1.8em
     margin-top: 0.5em
@@ -227,11 +184,7 @@ label
 .faded
     opacity: 0.39
 
-.tooltiptext.membertooltip
-    width: 20em
-    z-index: 151
-    left: 6.5em
-    top: -10.1em
+.membertooltip
     font-size: 0.7em
 
 ul.left

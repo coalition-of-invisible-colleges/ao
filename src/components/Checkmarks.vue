@@ -1,63 +1,23 @@
 <template lang='pug'>
 
 .upgrades
-    div
-        div.endpad(v-if='!isDoge')
-            h2.yellowtx(v-if='b.guild') {{ b.guild }}
-            .projects(v-if='subguilds.length > 0')
-                h3.bluetx projects
-                ul.none
-                    li.spaced(v-for='p in subguilds'  :key='subguilds')
-                        span(@click='goIn(p.taskId)')
-                            img.floatleft(src='../assets/images/badge.svg')
-                        span(@click='goIn(p.taskId)')
-                            span.nl.gui.smaller(:class='cardInputSty(p.color)') {{ p.guild }}
-                        ul.none.indent
-                            li.spaced(v-for='sp in p.guilds')
-                                span(@click='goIn(sp.taskId, p.taskId)')
-                                    img.floatleft.smaller(src='../assets/images/badge.svg')
-                                span(@click='goIn(sp.taskId), p.taskId')
-                                    span.nl.gui.smallest(:class='cardInputSty(sp.color)') {{ sp.guild }}
-            current.clickable(v-for='n in $store.getters.hodlersByCompletions'  :memberId='n.taskId'  :b='b'    :inId='ugly'  :completions='n.contextCompletions'  :key='$store.getters.hodlersByCompletions')
-            current(v-for='n in holdOrSent'  :memberId='n'  :b='b'  :inId='ugly')
-            .box.morepad
-                div.dogep.spinslow
-                    .tooltip
-                        img(:class="{ungrabbedcoin : !isGrabbed}" src='../assets/images/coin.svg' @click='toggleGrab')
-                        .tooltiptext.hodlsuggest(v-if='!isGrabbed') click to hodl
-                        .tooltiptext.hodlsuggest(v-else) hodled ~ click to dump
-                    p.hodlcount(:class="{grabbedhodlcount: isGrabbed}") {{ b.deck.length }}
-        div.endpadtwo(v-else)
-            .title.yellowtx missions
-            ul.none
-                template(v-for='g in (showAllGuilds ? missions : missions.slice(0, 5))')
-                    li.spaced
-                        span(@click='goIn(g.taskId)')
-                            img.floatleft(src='../assets/images/badge.svg')
-                        span(@click='goIn(g.taskId)')
-                            span.nl.gui.yellowtx {{ g.guild }}
-                        span(v-for='c in completions(g)'  @click='goIn(c.taskId, g.taskId)'  :class='{ padleft : getSubPriorities(g.taskId).length > 0 }')
-                            .plain.checkmark.tooltip(:class="cardInputSty(c.color)") ☑
-                                linky.tooltiptext(:x='c.name')
-                        .description
-                            linky(:x='g.name')
-                            span.projectlist.aproject(v-if='g.guilds && g.guilds.length >= 1'  v-for='(p, i) in g.guilds'  @click='goIn(p.taskId, g.taskId)')
-                                img(src='../assets/images/badge.svg'  :class='{ first : i === 0 }')
-                                span(:class='cardInputSty(p.color)') {{ p.guild }}
-                .more(v-if='missions.length > 5 && !showAllGuilds'  @click='showGuilds') +{{ $store.getters.myGuilds.length - 5 }}
-                .more(v-else-if='missions.length > 5 && showAllGuilds'  @click='hideGuilds') ( )
+    projects
+    current-checks.clickable(v-for='n in $store.getters.hodlersByCompletions'  :memberId='n.taskId'  :b='b'  :completions='n.contextCompletions'  :key='n.taskId')
+    current-checks(v-for='n in holdOrSent'  :memberId='n'  :b='b'  :key='n')
 </template>
 
 <script>
-import Current from './CurrentChecks'
+import CurrentChecks from './CurrentChecks'
 import Linky from './Linky'
-
+import Projects from './Projects'
 
 export default {
     components:{
-        Linky,  Current,
+        Linky, CurrentChecks, Projects
     },
     mounted() {
+        this.$store.commit('setMode' , 2)
+        this.$store.commit('setDimension' , 0)
         this.$store.commit('stopLoading')
     },
     data(){
@@ -67,7 +27,6 @@ export default {
     },
     methods: {
         goIn(taskId, guild = undefined){
-            this.playPageTurn()
             let parents = []
             let panel = [taskId]
             let top = 0
@@ -93,11 +52,6 @@ export default {
             if(this.$store.state.upgrades.mode === 'doge' && this.$store.getters.contextCard.priorities.length > 0) {
                 this.$store.commit("setMode", 1)
             }
-        },
-        playPageTurn(){
-            var flip = new Audio(require('../assets/sounds/myst158.wav'))
-            flip.volume = flip.volume * 0.3
-            flip.play()
         },
         completions(guild){
             let completions = []

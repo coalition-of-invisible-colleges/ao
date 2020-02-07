@@ -132,14 +132,13 @@ export default {
           })
         },
         copyCardToClipboard(){
-
-          console.log('attemt to copy, ', this.b.name)
           navigator.clipboard.writeText(this.b.name)
               .then(x => console.log('success', x))
-              .catch(err => console.log('fail', err))
+              .catch(err => {
+                  console.log('failed to copy: ' + this.b.name, {err}) // XXX firefox, null error
+              })
         },
         deaction(){
-
           this.$store.commit("setAction", false)
         },
     },
@@ -161,10 +160,6 @@ export default {
         },
         cardInputSty(){
           if(!this.b) {
-            console.log("bad card data in card index")
-            console.log("b is ", this.b)
-            console.log("inId is ", this.inId)
-            console.log("c is ", this.c)
             return
           }
           return {

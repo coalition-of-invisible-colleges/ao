@@ -1,7 +1,7 @@
 <template lang='pug'>
 div
   img.l(src="../assets/images/sun.svg"  ref='sun'  :class='{ bigger : isSun }')
-  div.sunmenu(v-if='isSun')
+  div.sunmenu(v-if='isSun && $store.getters.member.muted')
       p(@click='goFront("doge")'  :class='{ dabstination : $store.state.upgrades.mode === "doge" }')
           img.lil(src='../assets/images/buddadoge.svg')
           span Oracle
@@ -25,8 +25,6 @@ div
 <script>
 import Hammer from 'hammerjs'
 import Propagating from 'propagating-hammerjs'
-
-import Dimensions from '../utils/dimensions'
 
 export default {
   computed:{
@@ -130,7 +128,6 @@ export default {
     height: 3.5555555555em
     left: 0
 
-
 .sunmenu
     position: fixed
     top: 5em
@@ -174,9 +171,8 @@ p:hover
     img
         transform: translateX(50%)
         height: 1.1em
-        
+
 .bigger
     height: 5.5555555555em
-
 
 </style>
