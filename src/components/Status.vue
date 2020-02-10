@@ -16,6 +16,11 @@
                 span(v-else-if="$store.state.loader.connected == 'disconnected'") disconnected
                 span.pong ({{ $store.state.loader.lastPing }} ms pong)
             p(v-if="$store.state.loader.connectionError") {{ $store.state.loader.connectionError }}
+            h3(v-if='liveConnections.length === 1') 1 AO online
+            h3(v-if='liveConnections.length === 1') {{ liveConnections.length }} AOs online
+            h3(v-else) no AOs online
+            li
+                ul(v-for='ao in liveConnections') {{ ao.alias }}
             p.suggest(v-if='$store.getters.member.muted') double click to unmute
             p.suggest(v-if='!$store.getters.member.muted') double click to mute
     .wowdar(v-if='!$store.getters.member.muted')

@@ -2,14 +2,16 @@
 
 .Connect.container
     h1 Connect
-    h2(v-if='liveConnections.length > 0'  ) Connected to
+    h2(v-if='liveConnections.length > 0'  ) Connections
     div(v-for='r in liveConnections')
         h4 {{ r.state.cash.alias }} connected - {{ uptimePercent(r.successfuls, r.fails) }}% uptime ({{ r.successfuls + r.fails }} attempts) -
+        span(v-if='isMutual(r.address)') mutual
         span.conn(@click='pollState(r.address)') update
         span.discon(@click='discon(r.address)') delete
     h2(v-if='brokeConnections.length > 0'  ) Broken from
     div(v-for='r in brokeConnections')
         h4 {{ r.address.slice(0, 11) }} - {{ uptimePercent(r.successfuls, r.fails) }}% uptime ({{ r.successfuls + r.fails }} attempts) -
+        span(v-if='isMutual(r.address)') mutual
         span.conn(@click='pollState(r.address)') update
         span.discon(@click='discon(r.address)') delete
     h2(v-if='unmatchedSubs.length > 0') Feed to
@@ -83,6 +85,11 @@ export default {
         },
         uptimePercent(successes, fails) {
             return ((successes / (successes + fails)) * 100).toFixed(1)
+        },
+        isMutual(address) {
+            return this.$store.state.cash.subscribed.some(a => {
+                return address === a
+            })
         },
     },
     computed: {

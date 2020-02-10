@@ -7,7 +7,12 @@ const evs = require( './events')
 let sockets = {}
 
 function watchAos(){
-    state.serverState.ao.forEach(n => {
+	updateAos()
+	setInterval(updateAos, 300000 )
+}
+
+function updateAos() {
+	state.serverState.ao.forEach(n => {
         connector.getState(n.address, n.secret, (err, s) => {
           if (err || s === 'unauthorized'){
               evs.aoRelayAttempted(n.address, false)

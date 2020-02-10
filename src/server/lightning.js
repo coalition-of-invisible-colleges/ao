@@ -12,7 +12,7 @@ const {serverState, pubState} = require( './state')
 
 console.log("using, " + config.clightning.dir)
 
-const client = new LightningClient(config.clightning.dir, true);
+const client = new LightningClient(config.clightning.dir, false);
 
 
 // lightningRouter.post('/lightning/channel',(req, res) => {

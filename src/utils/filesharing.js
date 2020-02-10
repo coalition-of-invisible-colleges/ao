@@ -15,10 +15,10 @@ async function scanMemes() {
 		// let promise = ipfs.add(globSource('../.ao/memes', { recursive: true }))
 		let hash
 		for await (const file of ipfs.add(globSource('../.ao/memes', { recursive: true }))) {
-			console.log("scanning meme")
 			hash = file.cid
-			console.log("meme scanned: ", String(file.cid))
+			console.log('/ipfs/' + file.cid.toString())
 		}
+		console.log('memes scanned')
 		// console.log("after scan memes")
 		// console.log("CID is ", hash)
 		// for await (const file of ipfs.get(hash)) {
