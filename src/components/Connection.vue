@@ -24,7 +24,6 @@ export default {
     props: ['c'],
     methods: {
         discon() {
-            console.log("try diconnection", this.c.address)
             this.$store.dispatch("makeEvent", {
                 type: 'ao-disconnected',
                 address: this.c.address,

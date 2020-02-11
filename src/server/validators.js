@@ -29,7 +29,7 @@ module.exports = {
   },
   isAddress(val, errRes){
       let result = false
-      state.pubState.ao.forEach(ao =>{
+      state.pubState.ao.concat(state.pubState.cash.subscribed).forEach(ao =>{
           if (val === ao.address){
             result = true
           }

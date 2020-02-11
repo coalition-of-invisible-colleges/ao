@@ -10,24 +10,25 @@
         label(for="aoSecretInput")  connection secret:
         input#aoSecretInput(v-model='ao.secret' type='text')
     .ourinfo
-        h2(v-if='!$store.state.cash.alias || $store.state.cash.alias.trim().length < 1') this AO
+        .renaming(v-if='!$store.state.cash.alias || $store.state.cash.alias.trim().length < 1 || rename')
+            input#aoAliasInput(v-model='aoNamed.alias' type='text'  placeholder='name this AO'  @keyup.enter='renameAO'  @keyup.esc='toggleRename'  ref='aliasInput')
+            button(v-if='!$store.state.cash.alias || $store.state.cash.alias.trim().length < 1'  @click='renameAO'  :disabled='!validName') name AO
+            button(v-else  @click='renameAO'  :disabled='!validName') rename AO
         h2(v-else) {{ $store.state.cash.alias }}
-            span.change(@click='toggleChangeName()') change
-        form-box.topspace(v-if='changeName'  btntxt="rename"  event='ao-named'  v-bind:data='aoNamed')
-            label(for="aoAliasInput") change ao alias:
-            input#aoAliasInput(v-model='aoNamed.alias' type='text')
-        h4 Put this information into another AO to allow it to send cards here.
-        h4 Address:
+            span.rename(@click='toggleRename()') rename
+        h4 Address: 
             code(v-if='$store.state.cash.alias') {{ $store.state.cash.address }}
             code(v-else) set an alias for this AO to display address
-        h4 Connection Secret:
+        h4 Connection Secret: 
             code {{ $store.state.loader.token }}
+        h4 Put this information into another AO to allow it to send cards here.
 </template>
 
 <script>
 
 import FormBox from './FormBox'
 import Connection from './Connection'
+import Vue from 'vue'
 
 export default {
     mounted() {
@@ -44,31 +45,43 @@ export default {
         return {
             aoNamed: {
                 type: 'ao-named',
-                alias: ''
+                alias: '',
             },
             ao: {
                 type: "ao-connected",
                 address: '',
                 secret: '',
             },
-            changeName: false,
+            rename: false,
         }
     },
     methods: {
-        toggleChangeName() {
-            this.changeName = !this.changeName
+        toggleRename() {
+            if(this.$store.state.cash.alias && this.$store.state.cash.alias.trim().length >= 1) {
+                this.aoNamed.alias = this.$store.state.cash.alias
+            }
+            this.rename = !this.rename
+            if(this.rename) {
+                Vue.nextTick( () => {
+                    document.getElementById('aoAliasInput').focus()
+                })
+            }
         },
-
+        renameAO() {
+            this.$store.dispatch("makeEvent", _.clone(this.aoNamed))
+            this.toggleRename()
+        }
     },
     computed: {
-        unmatchedSubs(){
+        unmatchedSubs() {
             let addresses = this.$store.state.ao.map(r => r.address)
-            console.log("connected addresses:" , {addresses})
             let un = this.$store.state.cash.subscribed.filter(s => {
                 return addresses.indexOf(s.address) === -1
             })
-            console.log('unmatched ', un)
             return un
+        },
+        validName() {
+            return this.aoNamed.alias.length >= 1 && this.aoNamed.alias !== this.$store.state.cash.alias
         },
     },
 }
@@ -84,6 +97,7 @@ export default {
 @import '../styles/title'
 
 h2
+    position: relative
     text-align: center
     
 h6
@@ -133,12 +147,15 @@ select.form-control
 .faded:hover
     opacity: 1
 
-.change
-    font-size: 0.9em
+.rename
+    font-size: 0.7em
     margin-left: 0.5em
     margin-right: 0.5em
     cursor: pointer
     color: blue
+    position: absolute
+    bottom: 0
+    user-select: none
 
 code
     word-wrap: break-word
@@ -163,8 +180,23 @@ code
 .ourinfo
     background: lightGrey
     color: main
+    margin-top: 2em
+    margin-bottom: 4em
     padding: 1em
     border-radius: 1em
     h4
         text-align: center
+        
+#aoAliasInput
+    width: 16em
+    color: black
+    
+.renaming
+    text-align: center
+    
+.renaming button
+    width: 8em
+    
+.renaming button:disabled
+    opacity: 0.7
 </style>

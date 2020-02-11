@@ -65,12 +65,15 @@ router.post('/events', (req, res, next)=>{
           }
           break
       case 'ao-connected':
+          console.log("ao-connected spec")
           connector.postEvent(req.body.address, req.body.secret, {
               type: 'ao-subscribed',
               address: state.serverState.cash.address,
               secret: req.body.secret, //
           }, (subscriptionResponse) => {
+              console.log("point 2")
               if (!subscriptionResponse.lastInsertRowid){
+                  console.log("failed")
                   return res.status(200).send(['ao-connect failed'])
               }
               console.log('subscribe success, attempt ao connect')
