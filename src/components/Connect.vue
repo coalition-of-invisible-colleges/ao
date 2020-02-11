@@ -2,22 +2,8 @@
 
 .Connect.container
     h1 Connect
-    h2(v-if='liveConnections.length > 0'  ) Connections
-    div(v-for='r in liveConnections')
-        h4 {{ r.state.cash.alias }} connected - {{ uptimePercent(r.successfuls, r.fails) }}% uptime ({{ r.successfuls + r.fails }} attempts) -
-        span(v-if='isMutual(r.address)') mutual
-        span.conn(@click='pollState(r.address)') update
-        span.discon(@click='discon(r.address)') delete
-    h2(v-if='brokeConnections.length > 0'  ) Broken from
-    div(v-for='r in brokeConnections')
-        h4 {{ r.address.slice(0, 11) }} - {{ uptimePercent(r.successfuls, r.fails) }}% uptime ({{ r.successfuls + r.fails }} attempts) -
-        span(v-if='isMutual(r.address)') mutual
-        span.conn(@click='pollState(r.address)') update
-        span.discon(@click='discon(r.address)') delete
-    h2(v-if='unmatchedSubs.length > 0') Feed to
-    div(v-for='s in unmatchedSubs')
-        span.conn {{ s.address }}
-        span.discon(@click='discon(s.address)').discon delete
+    h2 Connections
+    connection(v-for='c in $store.state.ao.concat(unmatchedSubs)'  :c='c')
     h3 Connect to another AO:
     form-box(btntxt="connect"  event='ao-connected' v-bind:data='ao')
         label(for="aoAddressInput") address:
@@ -40,6 +26,7 @@
 <script>
 
 import FormBox from './FormBox'
+import Connection from './Connection'
 
 export default {
     mounted() {
@@ -49,7 +36,8 @@ export default {
     },
     props: ['b', 'inId'],
     components: {
-        FormBox
+        FormBox,
+        Connection,
     },
     data() {
         return {
@@ -64,11 +52,11 @@ export default {
             },
         }
     },
-    components: { FormBox },
     methods: {
         toggleChangeName() {
             this.changeName = !this.changeName
         },
+
     },
     computed: {
         unmatchedSubs(){

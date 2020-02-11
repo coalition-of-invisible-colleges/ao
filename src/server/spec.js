@@ -125,6 +125,7 @@ router.post('/events', (req, res, next)=>{
           }
           break
       case "ao-updated":
+          console.log("ao-updated case")
           state.serverState.ao.forEach(a => {
               if (a.address === req.body.address){
                   console.log("matched address")

@@ -41,6 +41,7 @@ function aoRelayAttempted(address, successful, callback) {
 }
 
 function aoUpdated(address, state, callback){
+    console.log("aoupdated")
     let newEvent = {
         type: "ao-updated",
         address,
