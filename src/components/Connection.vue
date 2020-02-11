@@ -12,13 +12,8 @@
     div(v-if='isConnected') {{ c.address }}
     p {{ uptimePercent }}% uptime (of {{ c.successfuls + c.fails }})
     p
-<<<<<<< HEAD
         span.conn(@click='pollState()') retry
         span.discon(@click='discon()') delete
-=======
-        span.conn(@click='pollState(c.address)') retry
-        span.discon(@click='discon(c.address)') delete
->>>>>>> 407ba21... merged three into one connections list
 </template>
 
 <script>
@@ -37,11 +32,7 @@ export default {
             console.log("pollstate")
             this.$store.dispatch("makeEvent", {
                 type: 'ao-updated',
-<<<<<<< HEAD
                 address: this.c.address,
-=======
-                address: this.c.address
->>>>>>> 407ba21... merged three into one connections list
             })
         },
     },
