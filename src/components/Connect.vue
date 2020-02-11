@@ -66,39 +66,11 @@ export default {
     },
     components: { FormBox },
     methods: {
-        discon(address){
-            console.log("try diconnection", address)
-            this.$store.dispatch("makeEvent", {
-                type: 'ao-disconnected',
-                address,
-            })
-        },
-        pollState(address) {
-            console.log("pollstate")
-            this.$store.dispatch("makeEvent", {
-                type: 'ao-updated',
-                address
-            })
-        },
-        toggleGive(){
-            this.showGive = !this.showGive
-        },
-        uptimePercent(successes, fails) {
-            return ((successes / (successes + fails)) * 100).toFixed(1)
-        },
-        isMutual(address) {
-            return this.$store.state.cash.subscribed.some(a => {
-                return address === a
-            })
+        toggleChangeName() {
+            this.changeName = !this.changeName
         },
     },
     computed: {
-        liveConnections(){
-            return this.$store.state.ao.filter(r => r.state && r.state.cash && r.state.cash.alias)
-        },
-        brokeConnections(){
-            return this.$store.state.ao.filter(r => !r.state)
-        },
         unmatchedSubs(){
             let addresses = this.$store.state.ao.map(r => r.address)
             console.log("connected addresses:" , {addresses})
@@ -107,21 +79,6 @@ export default {
             })
             console.log('unmatched ', un)
             return un
-        },
-        playInfo(){
-            return {
-                type: 'task-sub-tasked',
-                taskId:  this.toGuild,
-                subTask: this.b.taskId,
-            }
-        },
-        passInfo(){
-            return {
-                type: 'task-passed',
-                taskId: this.b.taskId,
-                fromMemberId: this.$store.getters.member.memberId,
-                toMemberId: this.toMember,
-            }
         },
     },
 }
@@ -183,28 +140,12 @@ select.form-control
 .faded:hover
     opacity: 1
 
-.conn, .discon
-    font-size: 0.8em
+.change
+    font-size: 0.9em
     margin-left: 0.5em
     margin-right: 0.5em
-
-.discon
     cursor: pointer
-    color: red
-
-.conn
-    cursor: pointer
-    color: green
-    word-wrap: break-word
-    word-break: break-word
-
-.clearboth
-    // width: 50%
-    // margin-left: 50%
-    // transform: translateX(-50%)
-    // clear: both
-    // margin-top: 1em
-    // padding-top: 0.75em
+    color: blue
 
 code
     word-wrap: break-word

@@ -55,6 +55,7 @@ function cashMuts(cash, ev){
 		switch (ev.type) {
 			case "ao-disconnected":
 				cash.subscribed.forEach( (ao, i) => {
+          console.log("for ", i, " and ev.address is ", ev.address, " and ao.address is ", ao.address)
 					if (ao.address === ev.address) {
 							cash.subscribed.splice(i, 1)
 					}
