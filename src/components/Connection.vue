@@ -2,6 +2,8 @@
 
 .connection
     .icons
+        img.redbirdy(v-if='isWarp' src='../assets/images/birdbtn_red.svg')
+        .spacer(v-else)
         img.send(v-if='!isSendOnly && isBroken' src='../assets/images/forwardRed.svg')
         img.send(v-else-if='!isSendOnly && isConnected' src='../assets/images/forwardGreen.svg')
         div(v-else-if='!isSendOnly') error
@@ -56,6 +58,10 @@ export default {
         uptimePercent() {
             return ((this.c.successfuls / (this.c.successfuls + this.c.fails)) * 100).toFixed(1)
         },
+        isWarp() {
+            if(!this.$store.getters.warpDrive || !this.$store.getters.warpDrive.address) return false
+            return this.c.address === this.$store.getters.warpDrive.address
+        }
     },
 }
 </script>
@@ -76,9 +82,9 @@ p
     
 .icons
     float: left
-    width: 8em
+    width: 12em
     
-.send, .receive, .spacer
+.redbirdy, .send, .receive, .spacer
     width: 4em
     
 .send

@@ -1,8 +1,7 @@
 <template lang='pug'>
 
 .Connect.container
-    h1 Connect
-    h2 Connections
+    h1 Connections
     connection(v-for='c in $store.state.ao.concat(unmatchedSubs)'  :c='c')
     h3 Connect to another AO:
     form-box(btntxt="connect"  event='ao-connected' v-bind:data='ao')
