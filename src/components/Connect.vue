@@ -10,11 +10,13 @@
         input#aoAddressInput(v-model='ao.address' type='text')
         label(for="aoSecretInput")  connection secret:
         input#aoSecretInput(v-model='ao.secret' type='text')
-    h3 Update AO name (currently called {{ $store.state.cash.alias }})
-    form-box.topspace(btntxt="rename"  event='ao-named'  v-bind:data='aoNamed')
-        label(for="aoAliasInput") change ao alias:
-        input#aoAliasInput(v-model='aoNamed.alias' type='text')
     .ourinfo
+        h2(v-if='!$store.state.cash.alias || $store.state.cash.alias.trim().length < 1') this AO
+        h2(v-else) {{ $store.state.cash.alias }}
+            span.change(@click='toggleChangeName()') change
+        form-box.topspace(v-if='changeName'  btntxt="rename"  event='ao-named'  v-bind:data='aoNamed')
+            label(for="aoAliasInput") change ao alias:
+            input#aoAliasInput(v-model='aoNamed.alias' type='text')
         h4 Put this information into another AO to allow it to send cards here.
         h4 Address:
             code(v-if='$store.state.cash.alias') {{ $store.state.cash.address }}
@@ -50,6 +52,7 @@ export default {
                 address: '',
                 secret: '',
             },
+            changeName: false,
         }
     },
     methods: {
@@ -81,6 +84,9 @@ export default {
 @import '../styles/button'
 @import '../styles/title'
 
+h2
+    text-align: center
+    
 h6
     text-align: center
 
