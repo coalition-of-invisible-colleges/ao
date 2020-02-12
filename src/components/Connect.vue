@@ -14,6 +14,7 @@
             input#aoAliasInput(v-model='aoNamed.alias' type='text'  placeholder='name this AO'  @keyup.enter='renameAO'  @keyup.esc='toggleRename'  ref='aliasInput')
             button(v-if='!$store.state.cash.alias || $store.state.cash.alias.trim().length < 1'  @click='renameAO'  :disabled='!validName') name AO
             button(v-else  @click='renameAO'  :disabled='!validName') rename AO
+            span.rename(@click='toggleRename()') cancel
         h2(v-else) {{ $store.state.cash.alias }}
             span.rename(@click='toggleRename()') rename
         h4 Address: 
@@ -192,6 +193,7 @@ code
     color: black
     
 .renaming
+    position: relative
     text-align: center
     
 .renaming button
@@ -199,4 +201,8 @@ code
     
 .renaming button:disabled
     opacity: 0.7
+    
+.renaming span.rename
+    font-size: 1em
+    font-weight: bold
 </style>
