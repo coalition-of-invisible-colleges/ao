@@ -272,7 +272,13 @@ fi
 
 # install project dependencies
 cd ao
-npm install
+
+if [ npm list --depth 0 AutonomousOrganization | grep AutonomousOrganization -eq 0 ];
+then
+	npm install
+else
+	echo ao node module already installed.
+fi
 
 # create configuration.js
 if [ -f "$HOME/ao/configuration.js" ];
