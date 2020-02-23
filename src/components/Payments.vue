@@ -22,18 +22,17 @@
 <script>
 
 import calcs from '../calculations'
-import FormBox from './FormBox'
 import PayAddress from './PayAddress'
 import PayReq from './PayReq'
 
 export default {
     components:{
-      FormBox, PayReq, PayAddress,
+      PayReq, PayAddress,
     },
     mounted() {
         this.$store.commit('setMode' , 3)
         this.$store.commit('setDimension' , 0)
-        this.$store.commit('stopLoading')
+        this.$store.dispatch('loaded')
     },
     data(){
         return {

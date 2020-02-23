@@ -23,7 +23,6 @@ import FormBox from './FormBox'
 import cryptoUtils from '../crypto'
 import FancyInput from './FancyInput'
 
-
 export default {
     components: {
         FormBox, FancyInput
@@ -88,6 +87,7 @@ export default {
 @import '../styles/colours'
 @import '../styles/button'
 @import '../styles/skeleton'
+@import '../styles/input'
 
 img
     float: left

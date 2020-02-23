@@ -15,7 +15,6 @@
 
 <script>
 import cryptoUtils from '../crypto'
-
 import FormBox from './FormBox'
 import FancyInput from './FancyInput'
 
@@ -59,6 +58,7 @@ export default {
 
 @import '../styles/colours'
 @import '../styles/skeleton'
+@import '../styles/input'
 
 #projects
     color:accent1

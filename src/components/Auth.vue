@@ -6,7 +6,6 @@
       input#password(type='password', v-model='pass', autocapitalize="none", autocomplete="off", autocorrect="off", @keyup.enter='createSession', placeholder='password')
       p.red {{ err }}
       button.primary(@click="createSession") login
-  //- button(v-else  @click="killSession") log out
 </template>
 
 <script>
@@ -78,6 +77,7 @@ export default {
 
 @import '../styles/colours'
 @import '../styles/button'
+@import '../styles/input'
 
 #auth
     background-color:accent5

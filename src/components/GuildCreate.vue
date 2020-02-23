@@ -7,10 +7,6 @@
 
 <script>
 
-
-import FormBox from './FormBox'
-
-
 export default {
     props: ['b', 'editing'],
     data() {
@@ -56,9 +52,6 @@ export default {
             return "mission"
         }
     },
-    components: {
-         FormBox
-    },
 }
 
 </script>
@@ -66,6 +59,10 @@ export default {
 <style lang='stylus' scoped>
 
 @import '../styles/button'
+@import '../styles/input'
+
+button
+    width: 90%
 
 .guildcreate
     background: transparent

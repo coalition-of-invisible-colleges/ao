@@ -66,6 +66,8 @@ router.post('/events', (req, res, next)=>{
           break
       case 'ao-connected':
           console.log("ao-connected spec")
+          console.log("req.body.address is ", req.body.address)
+          console.log("req.body.secret is ", req.body.secret)
           connector.postEvent(req.body.address, req.body.secret, {
               type: 'ao-subscribed',
               address: state.serverState.cash.address,

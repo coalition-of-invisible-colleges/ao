@@ -4,11 +4,11 @@
     .icons
         img.redbirdy(v-if='isWarp' src='../assets/images/birdbtn_red.svg')
         .spacer(v-else)
-        img.send(v-if='!isSendOnly && isBroken' src='../assets/images/forwardRed.svg')
-        img.send(v-else-if='!isSendOnly && isConnected' src='../assets/images/forwardGreen.svg')
+        img.send.red(v-if='!isSendOnly && isBroken' src='../assets/images/forward.svg')
+        img.send.green(v-else-if='!isSendOnly && isConnected' src='../assets/images/forward.svg')
         div(v-else-if='!isSendOnly') error
         .spacer(v-else)
-        img.receive(v-if='isSendOnly || isMutual' src='../assets/images/forwardGreen.svg')
+        img.receive.green(v-if='isSendOnly || isMutual' src='../assets/images/forward.svg')
     h3(v-if='isConnected') {{ c.state.cash.alias }}
     h3(v-else) {{ c.address }}
     div(v-if='isConnected') {{ c.address }}
@@ -88,6 +88,12 @@ p
     
 .send
     transform: rotate(-90deg)
+    
+.send.green
+    fill: wrexgreen
+
+.send.red
+    fill: wrexred
     
 .receive
     float: right

@@ -1,8 +1,10 @@
 <template lang='pug'>
 
 .priorities
-    img.bdoge(v-if='priorities.length < 1'  src='../assets/images/buddadoge.svg'  @click='$router.push("/doge")')
-    template.clearboth(v-for='(t, i) of priorities'  :key='t')
+    div(v-if='priorities.length < 1')
+        img.bdoge(  src='../assets/images/buddadoge.svg')
+        h5 upboat to create priority
+    .clearboth(v-for='(t, i) of priorities'  :key='t')
       .row.priority
           .allocated(v-if='allocated(t) > 0'  :class='{ openallocated : $store.state.context.action }') {{ allocated(t) }}
           img.singleship(@click='allocate(t)'  src='../assets/images/singleship.svg'  :class='{ openboat : $store.state.context.action === t }')
@@ -27,7 +29,7 @@ export default {
   mounted() {
       this.$store.commit('setMode' , 1)
       this.$store.commit('setDimension' , 0)
-      this.$store.commit('stopLoading')
+      this.$store.dispatch('loaded')
   },
   data(){
       return {
@@ -84,6 +86,10 @@ export default {
 @import '../styles/colours'
 @import '../styles/skeleton'
 @import '../styles/button'
+
+h5
+    text-align: center
+    color: lightGrey
 
 .priorities
     padding-bottom: 0.6em
@@ -201,10 +207,9 @@ img
 
 .bdoge
     width: 100%
-    opacity: 0.8
-    height: 17em
+    opacity: 0.77
+    height: 7em
     margin-top: 1em
-    cursor: pointer
 
 .priority
     margin-left: 4em
