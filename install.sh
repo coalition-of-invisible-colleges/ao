@@ -35,12 +35,12 @@ then
 fi
 
 # install npm
-if [ $(dpkg-query -W -f='${Status}' npm 2>/dev/null | grep -c "ok installed") -eq 1 ];
+if [ $(tor --version  2>/dev/null | grep -c "6\.13\.4") -eq 1 ];
 then
 	NPMVERSION=`npm -v`
 	echo npm v$NPMVERSION already installed
 else
-	sudo apt install -y npm
+	curl -L https://www.npmjs.com/install.sh | sh
 fi
 
 # install nvm
@@ -151,9 +151,9 @@ else
 	sudo apt install -y libsodium-dev
 fi
 
-if [ $(lightning-cli --version 2>/dev/null | grep -c "v0\.8\.0") -eq 1 ];
+if [ $(lightning-cli --version 2>/dev/null | grep -c "v0\.8\.1") -eq 1 ];
 then
-	echo c-lightning v0.8.0 already installed
+	echo c-lightning v0.8.1 already installed
 else
 	cd ~
 	git clone https://github.com/ElementsProject/lightning.git
