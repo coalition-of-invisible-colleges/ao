@@ -35,7 +35,7 @@ then
 fi
 
 # install npm
-if [ $(tor --version  2>/dev/null | grep -c "6\.13\.4") -eq 1 ];
+if [ $(npm --v  2>/dev/null | grep -c "6\.13\.4") -eq 1 ];
 then
 	NPMVERSION=`npm -v`
 	echo npm v$NPMVERSION already installed
