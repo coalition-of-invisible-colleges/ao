@@ -273,7 +273,7 @@ fi
 # install project dependencies
 cd ao
 
-if [ npm list --depth 0 AutonomousOrganization | grep AutonomousOrganization -eq 0 ];
+if [ $(npm list --depth 0 AutonomousOrganization | grep AutonomousOrganization) -eq 0 ];
 then
 	npm install
 else
@@ -366,7 +366,7 @@ else
 Description=ao-daemon
 
 [Service]
-ExecStart=$HOME/.nvm/versions/node/v11.15.0/bin/node $HOME/ao/production/server/app.js
+ExecStart=/usr/local/lib/nodejs/node-v12.16.1-linux-x64/bin/node $HOME/ao/src/server/app.js
 User=$USER
 Type=simple
 Restart=always
