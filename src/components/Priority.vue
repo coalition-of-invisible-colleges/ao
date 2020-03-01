@@ -146,7 +146,6 @@ export default {
     },
     methods: {
         deaction(){
-
             this.$store.commit("setAction", false)
         },
         setAction(){

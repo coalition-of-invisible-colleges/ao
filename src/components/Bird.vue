@@ -34,8 +34,8 @@
             select.shorten(v-model='toMemberWarp')
                 option(disabled, value='') to people
                 option(v-for='n in $store.getters.warpDrive.state.members', :value="n.memberId") {{ n.name }}
-            button.small(v-if='this.b.taskId !== this.$store.getters.member.memberId'  @click='give') send
-            button.small(v-else @click='migrate') send entire deck
+            button.small(v-if='this.b.taskId !== this.$store.getters.member.memberId'  @click.stop='give') send
+            button.small(v-else @click.stop='migrate') send entire deck
             span.sierpinskiwrapper
                 sierpinski(v-if='this.b.taskId !== this.$store.getters.member.memberId'  :b='b')
             .serverLabel on {{ $store.getters.warpDrive.address }}
@@ -48,7 +48,7 @@
         select(v-model='toAo')
             option(disabled  value='') to AO
             option(v-for='(n, i) in $store.getters.liveConnections', :value='i') {{ n.state.cash.alias }}
-        button.small(@click='setWarp') set
+        button.small(@click.stop='setWarp') set
     .theTitle(v-if='b.guild') {{ b.guild }}
     .count
         guild-create(:editing='showGuildCreate'  :b='b'  @closeit='toggleGuildCreate')

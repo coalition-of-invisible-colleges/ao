@@ -137,9 +137,6 @@ export default {
                   console.log('failed to copy: ' + this.b.name, {err}) // XXX firefox, null error
               })
         },
-        deaction(){
-          this.$store.commit("setAction", false)
-        },
     },
     computed: {
         cardStart(){
