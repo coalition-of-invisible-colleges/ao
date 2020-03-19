@@ -78,25 +78,30 @@
               inId: this.$store.getters.memberCard.taskId
             })
             .then(res => {
-              console.log('here we are at the then')
+              console.log('here we are at the then. res.text is ', res.text)
+              console.log('parsed is ', JSON.parse(res.text))
               const taskId = JSON.parse(res.text).event.taskId
+              console.log('then taskId is, ', taskId)
               this.$store.dispatch('makeEvent', {
                 type: 'grid-add',
                 taskId,
                 coord: {
-                  x: this.$store.state.upgrades.grid.selX,
-                  y: this.$store.state.upgrades.grid.selY
+                  x: this.x,
+                  y: this.y
                 }
               })
+              console.log('after dispatch')
             })
-            .catch(err => {})
+            .catch(err => {
+              console.log('error adding o grid: ', err)
+            })
         } else {
           this.$store.dispatch('makeEvent', {
             type: 'grid-add',
             taskId: foundId,
             coord: {
-              x: this.$store.state.upgrades.grid.selX,
-              y: this.$store.state.upgrades.grid.selY
+              x: this.x,
+              y: this.y
             }
           })
         }
