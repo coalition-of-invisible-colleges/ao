@@ -29,7 +29,10 @@ div
   export default {
     computed: {
       isSun() {
-        return this.$store.state.upgrades.dimension === 'sun'
+        return this.$store.state.upgrades.dimension === 'sun' && !this.isPepe
+      },
+      isPepe() {
+        return this.$router.currentRoute.path.split('/')[1] === 'grid'
       }
     },
     methods: {

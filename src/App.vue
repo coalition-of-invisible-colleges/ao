@@ -2,14 +2,14 @@
 
 .app(v-bind:class="{ xAxis: !$store.state.upgrades.zoom, paintbrush: $store.state.upgrades.paintbrushColor }")
 	contexts
-	sun
+	sun(:key='$router.currentRoute.path')
 	helm
-	bull
+	bull(:key='$router.currentRoute.path')
 	loader
 	event-feed
 	status
 	task-create(:key='$router.currentRoute.path')
-	portal
+	portal(:key='$router.currentRoute.path')
 	router-view
 </template>
 

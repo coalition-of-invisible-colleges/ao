@@ -10,15 +10,6 @@
         .agedbackground.weekoldpaper.hideonhover(v-else-if='cardAge < 30')
         .agedbackground.montholdpaper.hideonhover(v-else-if='cardAge < 90')
         .agedbackground.threemontholdpaper.hideonhover(v-else='cardAge >= 90')
-    .scrollbarwrapper(v-show='showCreate && task.search.length >= 2 && (matchCards.guilds.length + matchCards.doges.length + matchCards.cards.length) > 0'  v-model='task.search')
-        .searchresults
-            .result(v-for='t in matchCards.guilds'  @click.stop='debounce(loadResult, 500, [t])'  :class='resultInputSty(t)'  @dblclick.stop='goIn(t.taskId)')
-                img.smallguild(src='../assets/images/badge.svg')
-                span {{ t.guild }}
-                div {{ shortName(t.name) }}
-            .result(v-for='t in matchCards.doges'  @click.stop='debounce(loadResult, 500, [t])'  :class='resultInputSty(t)'  @dblclick.stop='goIn(t.taskId)')
-                current(:memberId='t.taskId')
-            .result(v-for='t in matchCards.cards'  @click.stop='debounce(loadResult, 500, [t])'  :class='resultInputSty(t)'  @dblclick.stop='goIn(t.taskId)') {{ shortName(t.name) }}
 </template>
 
 <script>
@@ -76,7 +67,6 @@
         let foundId = this.matchCard
         let potentialCard = this.task.name.trim()
         if (!foundId) {
-          console.log('card not found')
           request
             .post('/events')
             .set('Authorization', this.$store.state.loader.token)
@@ -88,7 +78,7 @@
               inId: this.$store.getters.memberCard.taskId
             })
             .then(res => {
-              console.log('then')
+              console.log('here we are at the then')
               const taskId = JSON.parse(res.text).event.taskId
               this.$store.dispatch('makeEvent', {
                 type: 'grid-add',
@@ -98,11 +88,8 @@
                   y: this.$store.state.upgrades.grid.selY
                 }
               })
-              console.log('done with gridAdd: ', taskId)
             })
-            .catch(err => {
-              console.log('task-create ERR', err)
-            })
+            .catch(err => {})
         } else {
           this.$store.dispatch('makeEvent', {
             type: 'grid-add',
@@ -164,7 +151,6 @@
     },
     computed: {
       taskId() {
-        // console.log("taskId function x is ", this.x, " y ", this.y)
         if (
           this.$store.state.grid[this.y] &&
           this.$store.state.grid[this.y][this.x]
@@ -194,17 +180,11 @@
       },
       debouncedName: {
         get() {
-          console.log(
-            'debouncedName Get function. searchResult is ',
-            this.$store.state.upgrades.searchResult
-          )
           if (this.$store.state.upgrades.searchResult) {
-            console.log('there is a search result', this.searchResult)
             this.task.name = this.$store.getters.hashMap[this.searchResult].name
             this.task.color = this.$store.getters.hashMap[
               this.searchResult
             ].color
-            console.log('this.task.name set to ', this.task.name)
             this.$store.commit('searchSelectionReceived')
             setTimeout(() => {
               this.$refs.gridText.focus()
@@ -242,10 +222,6 @@
         return days
       },
       searchResult() {
-        console.log(
-          'searchResult function, result is  ',
-          this.$store.state.upgrades.searchResult
-        )
         return this.$store.state.upgrades.searchResult
       }
     }

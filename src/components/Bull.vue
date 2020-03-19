@@ -34,7 +34,10 @@ div
   export default {
     computed: {
       isBull() {
-        return this.$store.state.upgrades.dimension === 'bull'
+        return this.$store.state.upgrades.dimension === 'bull' && !this.isPepe
+      },
+      isPepe() {
+        return this.$router.currentRoute.path.split('/')[1] === 'grid'
       }
     },
     methods: {

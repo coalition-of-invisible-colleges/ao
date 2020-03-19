@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .portal(ref='memeportal')
-    img.pepe(src='../assets/images/pepe.svg'  :class='{ highlight : isMemed }'  :key='$store.getters.contextCard')
+    img.pepe(src='../assets/images/pepe.svg'  :class='{ highlight : isMemed, bigger : isPepe }'  :key='$store.getters.contextCard')
 </template>
 
 <script>
@@ -63,6 +63,9 @@
             }
           })
         })
+      },
+      isPepe() {
+        return this.$router.currentRoute.path.split('/')[1] === 'grid'
       }
     }
   }
@@ -86,11 +89,13 @@
       position: relative
       opacity: 0.5
       height: 35px
-      width: 35px
       cursor: pointer
       z-index: 9001
 
   .highlight
       box-shadow: 0 0 20px wrexblue
       border-radius: 50%
+
+  .bigger
+      height: 5.5555555555em
 </style>
