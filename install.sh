@@ -34,6 +34,14 @@ then
 	mkdir -p $HOME/.ao
 fi
 
+# install curl
+if [ $(dpkg-query -W -f='${Status}' curl 2>/dev/null | grep -c "ok installed") -eq 1 ];
+then
+	echo curl already installed
+else
+	sudo apt install -y curl
+fi
+
 # install npm
 if [ $(npm --v  2>/dev/null | grep -c "6\.13\.4") -eq 1 ];
 then
