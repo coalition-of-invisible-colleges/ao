@@ -628,6 +628,53 @@ function tasksMuts(tasks, ev) {
         }
       })
       break
+    case 'task-started':
+      console.log('mutation task-started taskId', ev.taskId)
+      if (!ev.taskId || !ev.memberId) {
+        break
+      }
+      console.log('mutation task-started checkpoint 2')
+      tasks.forEach(task => {
+        if (task.taskId === ev.taskId) {
+          console.log('mutation task-started found task')
+          if (!task.clocked) {
+            task.clocked = []
+            console.log('mutation task-started created clocked array')
+          }
+          task.clocked.push({
+            memberId: ev.memberId,
+            start: Date.now(),
+            end: false
+          })
+          console.log('mutation task-started checkpoint 3')
+        }
+      })
+      console.log('mutation task-started done')
+      break
+    case 'task-stopped':
+      if (!ev.taskId || !ev.memberId) {
+        break
+      }
+      tasks.forEach(task => {
+        if (task.taskId === ev.taskId) {
+          let foundIndex = task.clocked.findIndex(c => {
+            return c.memberId === ev.memberId && !c.end
+          })
+          if (foundIndex !== -1) {
+            task.clocked[foundIndex].end = Date.now()
+            let dur =
+              task.clocked[foundIndex].end - task.clocked[foundIndex].start
+            console.log('dur is ', dur)
+            if (dur / (1000 * 60) < 1) {
+              console.log('task is under one minute, removing')
+              console.log('before clocked length is ', task.clocked.length)
+              task.clocked.splice(foundIndex, 1)
+              console.log('after clocked length is ', task.clocked.length)
+            }
+          }
+        }
+      })
+      break
     case 'task-claimed':
       let bounty = 0
       tasks.forEach(task => {

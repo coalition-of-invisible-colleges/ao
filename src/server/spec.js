@@ -599,6 +599,42 @@ router.post('/events', (req, res, next) => {
         res.status(400).send(errRes)
       }
       break
+    case 'task-started':
+      console.log(
+        'spec task-started taskId is ',
+        req.body.taskId,
+        ' and memberId is ',
+        req.body.memberId
+      )
+      if (
+        validators.isTaskId(req.body.taskId, errRes) &&
+        validators.isMemberId(req.body.memberId, errRes)
+      ) {
+        events.taskStarted(
+          req.body.taskId,
+          req.body.memberId,
+          req.body.blame,
+          utils.buildResCallback(res)
+        )
+      } else {
+        res.status(400).send(errRes)
+      }
+      break
+    case 'task-stopped':
+      if (
+        validators.isTaskId(req.body.taskId, errRes) &&
+        validators.isMemberId(req.body.memberId, errRes)
+      ) {
+        events.taskStopped(
+          req.body.taskId,
+          req.body.memberId,
+          req.body.blame,
+          utils.buildResCallback(res)
+        )
+      } else {
+        res.status(400).send(errRes)
+      }
+      break
     case 'task-claimed':
       if (
         validators.isTaskId(req.body.taskId, errRes) &&

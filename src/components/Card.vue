@@ -8,6 +8,7 @@
     bird(:b='b', :inId='inId')
     flag(:b='b', :inId='inId')
     tally(:b='b')
+    hourglass(:b='b')
     .dogecoin.tooltip(v-if='b.weight && b.weight > 0'  :key='dogers')
         img(v-for='n in parseInt(Math.floor(b.weight))'  :key='n'  src='../assets/images/sun.svg')
         img(v-if='b.weight % 1 > 0 || b.weight < 1'  :class="['sixteenth' + fractionalReserveDoge]"  src='../assets/images/sun.svg'  :key='dogers')
@@ -48,6 +49,7 @@
   import SimplePriorities from './SimplePriorities'
   import Current from './Current'
   import Linked from './Linked'
+  import Hourglass from './Hourglass'
 
   export default {
     props: ['b', 'inId', 'c'],
@@ -63,7 +65,8 @@
       SimplePriorities,
       Current,
       Tally,
-      Linked
+      Linked,
+      Hourglass
     },
     mounted() {
       let el = this.$refs.wholeCard

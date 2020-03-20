@@ -15,6 +15,7 @@
         tally.right.front.lesspadding.buffer(:b='card')
         span.right.front(v-if='card.book.startTs'  :class='{ buffertwo : !card.claimed || card.claimed.length < 1 }') {{ cardStart.days.toFixed(1) }} days
         img.right.front.cancel(v-if='card.book.startTs' src="../assets/images/timecube.svg")
+        hourglass(:b='card')
         linky.front(:x='name'  :key='name')
 </template>
 
@@ -25,10 +26,12 @@
   import Hypercard from './Card'
   import Checkbox from './Checkbox'
   import Tally from './Tally'
+  import Current from './Current'
+  import Hourglass from './Hourglass'
 
   export default {
     props: ['taskId', 'inId', 'inInId'],
-    components: { Hypercard, Linky, Checkbox, Tally },
+    components: { Hypercard, Linky, Checkbox, Tally, Current, Hourglass },
     mounted() {
       let el = this.$refs.wholeCard
       if (!el) return
@@ -126,6 +129,9 @@
           }
         }
       },
+      cardTimeClocked() {
+        return this.card.clocktime
+      },
       cardInputSty() {
         let color
         this.$store.state.tasks.some(t => {
@@ -146,9 +152,25 @@
     },
     methods: {
       deaction() {
+        this.$store.dispatch('makeEvent', {
+          type: 'task-stopped',
+          taskId: this.taskId,
+          memberId: this.$store.getters.member.memberId
+        })
         this.$store.commit('setAction', false)
       },
       setAction() {
+        console.log(
+          'action taskId is ',
+          this.taskId,
+          ' and memberId is ',
+          this.$store.getters.member.memberId
+        )
+        this.$store.dispatch('makeEvent', {
+          type: 'task-started',
+          taskId: this.taskId,
+          memberId: this.$store.getters.member.memberId
+        })
         this.$store.commit('setAction', this.taskId)
       },
       goIn() {

@@ -50,6 +50,7 @@
   @import '../styles/colours'
   @import '../styles/skeleton'
   @import '../styles/button'
+  @import '../styles/grid'
 
   .panel
       width: (100% - 2em)

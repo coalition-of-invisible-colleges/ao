@@ -458,6 +458,26 @@ function taskColored(taskId, inId, color, blame, callback) {
   dctrlDb.insertEvent(newEvent, callback)
 }
 
+function taskStarted(taskId, memberId, blame, callback) {
+  let newEvent = {
+    type: 'task-started',
+    taskId,
+    memberId,
+    blame
+  }
+  dctrlDb.insertEvent(newEvent, callback)
+}
+
+function taskStopped(taskId, memberId, blame, callback) {
+  let newEvent = {
+    type: 'task-stopped',
+    taskId,
+    memberId,
+    blame
+  }
+  dctrlDb.insertEvent(newEvent, callback)
+}
+
 function taskClaimed(taskId, memberId, blame, callback) {
   let newEvent = {
     type: 'task-claimed',
@@ -613,6 +633,11 @@ module.exports = {
   sessionKilled,
   taskCreated,
   taskBoosted,
+  taskStarted,
+  taskStopped,
+  taskPassed,
+  taskValued,
+  taskColored,
   taskClaimed,
   taskUnclaimed,
   taskRefocused,
@@ -626,9 +651,6 @@ module.exports = {
   taskPrioritized,
   pilePrioritized,
   taskDropped,
-  taskPassed,
-  taskValued,
-  taskColored,
   taskGuilded,
   taskSubTasked,
   taskDeSubTasked,

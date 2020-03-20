@@ -7,12 +7,12 @@
             .grid
                 .gridTwo(v-for="y in 17") 
                     .box(v-for="x in 17"  :style="{ gridColumnStart: x + 1, gridRowStart: y + 1 }") 
-                        grid-card(:x='x'  :y='y')
+                        grid-card(:x='x'  :y='y'  :key='$store.state.grid[y] ? $store.state.grid[y][x] ? $store.state.grid[y][x] : null : null')
         #theGridTwo(v-if="!$store.state.upgrades.zoom"  :key="$store.state.upgrades.zoom")
             .gridS
                 .gridTwoS(v-for="y in 17") 
                     .boxS(v-for="x in 17"  :style="{ gridColumnStart: x + 1, gridRowStart: y + 1 }")
-                        grid-card(:x='x'  :y='y')
+                        grid-card(:x='x'  :y='y'  :key='$store.state.grid[y] ? $store.state.grid[y][x] ? $store.state.grid[y][x] : null : null')
     .bottomL(v-if="$store.state.upgrades.zoom"  :key="$store.state.upgrades.zoom")
     .bottomS(v-if="!$store.state.upgrades.zoom"  :key="$store.state.upgrades.zoom")      
     search-panel(:key='searchUpdated')
